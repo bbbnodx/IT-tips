@@ -1,6 +1,37 @@
 # Windows10 PC セットアップ手順
 この文書はAI推進室において、WinPCを開発機としてセットアップするための手順を備忘録的にまとめたものです。
 
+- [1. KSK標準初期設定手順](#1-KSK標準初期設定手順)
+  - [1.1 不要なプリインストールソフトウェアのアンインストール](#11-不要なプリインストールソフトウェアのアンインストール)
+  - [1.2 McAfeeのインストール](#12-McAfeeのインストール)
+  - [1.3 McAfeeの更新とウイルススキャン](#13-McAfeeの更新とウイルススキャン)
+  - [1.4 Microsoft Office(32bit)のインストール](#14-Microsoft-Office32bitのインストール)
+  - [1.5 Windows Updateの実行](#15-Windows-Updateの実行)
+  - [1.6 ISMCクライアントのインストール](#16-ISMCクライアントのインストール)
+  - [1.7 その他必要ソフトウェアのインストール](#17-その他必要ソフトウェアのインストール)
+  - [1.8 新宿GC複合機ドライバのインストール](#18-新宿GC複合機ドライバのインストール)
+- [2. 開発環境の構築](#2-開発環境の構築)
+  - [2.1 Anacondaのインストール](#21-Anacondaのインストール)
+  - [2.2 VS Codeのインストール](#22-VS-Codeのインストール)
+  - [2.3 Gitのインストール](#23-Gitのインストール)
+  - [2.4 Microsoft Build Tools for Visual Studioのインストール](#24-Microsoft-Build-Tools-for-Visual-Studioのインストール)
+  - [2.5 NVIDIAドライバアップデート](#25-NVIDIAドライバアップデート)
+  - [2.6 CUDAのインストール](#26-CUDAのインストール)
+  - [2.7 cuDNNのインストール](#27-cuDNNのインストール)
+- [3. Deep Learning フレームワークの構築](#3-Deep-Learning-フレームワークの構築)
+  - [3.1 Tensorflow + Keras](#31-Tensorflow--Keras)
+  - [3.2 Chainer](#32-Chainer)
+  - [3.3 PyTorch](#33-PyTorch)
+  - [3.4 Sony NNC(Windows版)](#34-Sony-NNCWindows版)
+  - [3.5 Sony NNabla](#35-Sony-NNabla)
+- [4. Anaconda仮想環境の使い方](#4-Anaconda仮想環境の使い方)
+  - [4.1 ターミナルの初期設定](#41-ターミナルの初期設定)
+    - [2019/6/11追記](#2019611追記)
+  - [4.2 仮想環境の作成と切り替え](#42-仮想環境の作成と切り替え)
+  - [4.3 パッケージのインストール](#43-パッケージのインストール)
+  - [4.4 仮想環境の削除](#44-仮想環境の削除)
+  - [4.3 VS Codeの設定](#43-VS-Codeの設定)
+
 ## 1. KSK標準初期設定手順
 最初はCOMPASSの[PC設定手順(社内)](http://compass.ksk.local/compass/main/pc_setting.pdf)に則ってセットアップします。  
 なお、KSK-LANに接続するWindows機を想定しているため、COMPASSのリンクは全て社内リンクです。
@@ -31,6 +62,10 @@ Windows Updateを実行してください。複数回実行が必要なことも
 ### 1.8 新宿GC複合機ドライバのインストール
 "\\\\ADP2\\管理共有\\24共有ツール\\新宿GC_新複合機\\19新宿GC3F　FFBUドライバ\\"から複合機のドライバをコピーし、インストールしてください。
 
+追記：Windows10環境ではTCP/IP接続で印刷できない不具合(?)が報告されています。その場合はプリンタのプロパティを開き、ポートからWSD Portにチェックを入れてください。
+
+追記その2：[コントロールパネル] > [デバイスとプリンタ]でネットワークからプリンタを探して設定した方が確実です。
+
 
 ## 2. 開発環境の構築
 まず事前に"\\\\ADP2\\管理共有\\06セキュリティ\\17ISMS\\30_管理台帳\\19_12.ソフトウェア管理台帳\\フリーソフトウェア管理台帳(AI).xlsx"を参照し、インストールしようとするソフトウェアが許可済みであるかどうか確認してください。  
@@ -42,31 +77,27 @@ Windows Updateを実行してください。複数回実行が必要なことも
 当たり前ですが、業務に不要なものはインストールしないでください。
 
 ### 2.1 Anacondaのインストール
-インストール設定の途中で環境変数の設定が非推奨(Not recommended)になっていますが、設定しても大丈夫なはずです。  
+[Anaconda Distribution](https://www.anaconda.com/distribution/)
+
+公式ページからPython3系の最新ディストリビューションをダウンロードしてインストールしてください。インストール設定の途中で環境変数の設定が非推奨(Not recommended)になっていますが、その場合Anaconda promptというターミナルでしかPythonにアクセスできません。Windowsの場合はさほど影響もないので、環境変数に設定してしまっても構いません。一応、curlなどがAnaconda環境優先になってしまうことに留意しておきましょう。  
 Anacondaの注意点として、パッケージの管理がpipではなくcondaになります。pipも使えますが、Anaconda環境でpipを使うと不具合が起こるという報告が少なからずありますので、可能な限りconda経由でパッケージをインストールしてください。  
 
-#### 仮想環境について
-仮想環境の用途は主に2つです
-- 新しいパッケージをインストールするためのサンドボックス
-- プロジェクトごとにバージョンを固定するための環境
-
-前者について補足します。Anacondaはcondaのみでパッケージを管理するなら安全ですが、最新のパッケージを利用するにはpipやソースコンパイルでインストールする必要に迫られることがあります。その場合、不具合が発生してもロールバックできるように、仮想環境上で行うのが安全です。
+Pythonパッケージをインストールするときは、原則として仮想環境を使います。詳しくは[4. Anaconda仮想環境の使い方](#4-anaconda仮想環境の使い方)を参照してください。
 
 
-### 2.2 Gitのインストール
-インストール設定は基本的にデフォルトでいいはずですが、"Configuring the line ending conversions"(改行コードの設定)だけは「Checkout as-is, commit as-is」(何もしない)としてください。  
-Windowsの改行コードはCRLFで、UNIX系のOSはLFです。Git側で改行コードを自動変換してくれるように設定できますが、トラブルの元なので何もしないように設定するのが無難です。改行コードはエディタ側で設定しましょう。
+### 2.2 VS Codeのインストール
+[Visual Studio Code - Microsoft](https://code.visualstudio.com/)
 
+VS CodeはMicrosoftのIDE(統合開発環境)であるVisual Studioを軽量化した開発用エディタで、無料で利用することができます。AI推進室の標準エディタとなっているので、特に理由がなければVS Codeで開発してください。
 
-### 2.3 VS Codeのインストール
+VS Code拡張、設定などは**職業倫理に反しない範囲で**自由に設定できます。  
+AI推進室の標準設定が[KSK-AIのVS Code設定](https://github.com/ksk-ai/AI_StandardDevConf/blob/master/KSKSettingForVSCode.md)にまとめられているので、参照してください。
+
+上記リンクに記載されていない部分について：  
 最低でも次の拡張はインストールしましょう。
-- Python
+- Python (Microsoft)
 - Japanese Language Pack for Visual Studio Code
 
-また、**settings.jsonで既定の改行文字を必ず"\n"に変えてください**。
-```json
-"files.eol": "\n"
-```
 
 Git Bash(または任意のシェル)を統合ターミナルとして用いたい時は、settings.jsonを開いて以下の記述を追記します(パスは適宜置き換えてください)：
 ```json
@@ -74,26 +105,51 @@ Git Bash(または任意のシェル)を統合ターミナルとして用いた�
 ```
 
 
-### 2.4 Microsoft Build Toolsのインストール
-一部のパッケージのビルドに必要なので、ビルドツールをインストールします。  
-[Visual Studio 2017](https://www.visualstudio.microsoft.com/downloads/)のページ下部から「Tools for Visual Studio 2017」を開いて「Build Tools for Visual Studio 2017」をダウンロードしてください。  
-インストール画面でワークロードの「Visual C++ Build Tools」を選択し、インストールします。Cupyをインストールしたい場合は、「デスクトップ用のVC++2015.3 v140ツールセット」にもチェックを入れます。Cupyのインストールはやや面倒なので、後述の資料を参考にしてください。
+### 2.3 Gitのインストール
+[Git for Windows](https://gitforwindows.org/)
+
+バイナリをダウンロードして実行すると、Git環境とGitBashがインストールされます。  
+インストール設定は基本的にデフォルトでいいはずですが、"Configuring the line ending conversions"(改行コードの設定)だけは「Checkout as-is, commit as-is」(何もしない)としてください。  
+Windowsの改行コードはCRLFで、UNIX系のOSはLFです。Git側で改行コードを自動変換してくれるように設定できますが、トラブルの元なので何もしないように設定するのが無難です。改行コードはエディタ側で設定しましょう。
+
+GitHubアカウントが既にある場合は、configにアカウントの情報を追記しましょう。
+```bash
+$ git config --global user.name "アカウント名"
+$ git config --global user.email "メールアドレス"
+
+# 反映されているか確認
+$ cat ~/.gitconfig
+
+[user]
+    name = アカウント名
+    email = メールアドレス
+```
+
+
+### 2.4 Microsoft Build Tools for Visual Studioのインストール
+Windowsは他のOSと異なり、標準のCコンパイラを持っていません。一部のソフトウェアやパッケージはソースコードからのビルドが必要になることもあるので、ビルドツールをインストールします。  
+[Visual Studio 2019](https://www.visualstudio.microsoft.com/downloads/)のページ下部から「Tools for Visual Studio 2019」を開いて「Build Tools for Visual Studio 2019」をダウンロードしてください。  
+インストール画面でワークロードの「Visual C++ Build Tools」を選択し、インストールします。~~Cupyをインストールしたい場合は、「デスクトップ用のVC++2015.3 v140ツールセット」にもチェックを入れます。Cupyのインストールはやや面倒なので、後述の資料を参考にしてください。~~ 最新版のBuild Toolsでインストールできるようになりました。
 
 ### 2.5 NVIDIAドライバアップデート
-
+デフォルトでNVIDIA GeForce Experienceがインストールされているので、NVIDIAアカウントでログインすればアップデートできます。手間を惜しまないのであれば、手動でNVIDIAのサイトからダウンロードしてきても大丈夫です。
 
 ### 2.6 CUDAのインストール
-[NVIDIA CUDA](https://developer.nvidia.com/cuda-downloads)  
-最新版は深層学習ライブラリが対応していないこともあるので、ライブラリのドキュメントを確認してからバージョンを選んでください。
+[NVIDIA CUDA](https://developer.nvidia.com/cuda-downloads)
+
+最新版は深層学習ライブラリが対応していないこともあるので、ライブラリのドキュメントを確認してからバージョンを選んでください。特にNNablaはマイナーなのでCUDAの対応が遅いです。
 
 ### 2.7 cuDNNのインストール
-[NVIDIA cuDNN](https://developer.nvidia.com/cudnn) (要NVIDIAアカウント登録)  
+[NVIDIA cuDNN](https://developer.nvidia.com/cudnn) (要NVIDIAアカウント登録)
+
 cuDNNをダウンロードするにはNVIDIAアカウントでサインインする必要があります。  
-CUDAほどバージョンに厳密ではないので、基本的には最新版を使えば大丈夫です。
+CUDAほどバージョンに厳密ではないので、基本的には最新版を使えば大丈夫ですが、CUDAのバージョンには合わせる必要があります。
 
 
 
-## 3. Deep Learning ライブラリの構築
+## 3. Deep Learning フレームワークの構築
+各フレームワークはOSとCUDAのバージョンの違いによってインストール手順が変わります。公式ページを注意深く読んで、適切な手順でインストールしてください。特にWindowsは疎外され気味です。
+
 基本的にAnacondaで仮想環境を作り、その中にインストールします。
 ```bash
 $ conda create -n NewEnv
@@ -109,34 +165,42 @@ base                C:\Users\USERNAME\Anaconda3
 NewEnv          *   C:\Users\USERNAME\Abacibda3\envs\NewEnv
 ```
 
+
+
 ### 3.1 Tensorflow + Keras
+[TensorFlow | GPU support](https://www.tensorflow.org/install/gpu)
+
+
+公式ページの手順に従ってインストールします。GPU対応パッケージは`tensorflow-gpu`であることに注意してください。リンク先ページの最下部にあるように、環境変数を追加する必要もあります。  
 
 ### 3.2 Chainer
 [Chainer documentation - Installation](https://docs.chainer.org/en/stable/install.html)
+
+公式にはUbuntuとCentOSのみが推奨環境であり、MacとWindowsを含む他のOSでの動作は保証しないと書かれています。
+
 ```bash
 $ pip install chainer
 ```
 ChainerでGPUを活用するには、別途Cupyというライブラリをインストールする必要があります。  
 CupyはNumpyの主要なクラス、メソッドをGPUで計算するためのライブラリです。ただし、完全互換ではありません。元々はChainerの一部でしたが、現在は分離して提供されるようになりました。Chainerを用いない場合でも、NumPy配列計算を高速化したい場合には便利です。  
+  
 
-単純にCupyを使うには、condaでインストールするのが楽です。
-```bash
-$ conda install cupy
-```
-
-最新版のCupyをインストールするには、やや面倒な手順が必要です。
-1. Visual Studio Build Tools 2015をインストールする  
-2. `"C:\Program Files (x86)\Windows Kits\10\bin\10.0.17763.0\x64\"`から`rc.exe`と`rcdll.dll`を`"C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin"`にコピーする
-3. pipでCupyをインストール(CUDAのバージョンによって変わるので注意)
+~~最新版のCupyをインストールするには、やや面倒な手順が必要です。~~  
+Cupy6.0.0 以降では、比較的簡単になりました。
+1. Visual Studio Build Tools 2019をインストール([2.4節](#24-Microsoft-Build-Toolsのインストール)を参照)  
+2. pipでCupyをインストール(CUDAのバージョンによって変わるので注意)
 ```bash
 $ pip install cupy-cuda100
 ```
 
 
 ### 3.3 PyTorch
+[PyTorch | Get Started](https://pytorch.org/get-started/locally/)
+
+上記ページで自分の環境をクリックして選択すれば、`torch`と`torchvision`のインストール方法が表示されます。CUDAインストール済みの環境ではpip経由インストール、CUDAが入っていないもしくは別バージョンのCUDAを使いたい場合はconda経由インストールを推奨します。
 
 ### 3.4 Sony NNC(Windows版)
-[公式サイト](https://dl.sony.com/ja/app/)でメールアドレスを登録し、届いたメールのリンクからダウンロードできます。ただし、あまりマイナーアップデートされないようなので、誰かが持っているアーカイブを渡してもらった方が簡単です。  
+[公式サイト](https://dl.sony.com/ja/app/)でメールアドレスを登録し、届いたメールのリンクからアーカイブをダウンロードできます。ただし、あまりマイナーアップデートされないようなので、ADP1に置かれているアーカイブからインストールしても良いでしょう。  
 
 アーカイブをSSDドライブの適当な場所に展開してください。一般的には「`C:\Users\USERNAME\`」または「`C:\Users\USERNAME\tools\`」にしておけばいいと思います。  
 初回起動時に「Visual Studio 2015のVisual C++ 再頒布可能パッケージがインストールされていません」という旨の警告が表示されますが、「Microsoft Visual C++ 2017 Redistributable」がインスールされていれば問題ありません。むしろ、その状態だと2015パッケージはインストールできません。  
@@ -148,6 +212,7 @@ $ pip install cupy-cuda100
 ```bash
 $ pip install nnabla
 $ pip install nnabla-ext-cuda100  # CUDA10.0
+$ pip install pywin32  # Windows環境の場合は必須
 ```
 
 
@@ -172,6 +237,9 @@ $ conda init bash
 (base)
 $ 
 ```
+
+#### 2019/6/11追記
+現在のcondaのバージョンでは、`.bashrc`ではなく`.bash_profile`にコードを追加します。私の環境では上手く動かなかったので、`.bash_profile`に書き込まれたコードを`.bashrc`に移して動作するようになりました。
 
 ### 4.2 仮想環境の作成と切り替え
 以下のコマンドで新しい環境`new_env`を作成します。Pythonのバージョン指定がないときは、インストール可能な最新バージョンで作成されます。
@@ -216,7 +284,7 @@ $ pip install numpy
 
 
 ### 4.4 仮想環境の削除
-不要な仮想環境は削除できます。ただし、
+不要な仮想環境は削除できます。
 ```bash
 (new_env)
 $ conda deactivate
