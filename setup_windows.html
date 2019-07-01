@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+        <title>Windows10 PC セットアップ手順</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.10.2/dist/katex.min.css" integrity="sha384-yFRtMMDnQtDRO8rLpMIKrtPCD5jdktao2TV19YiZYWMDkUR5GQZR/NOVTdquEx1j" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+        <link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <style>
+.task-list-item { list-style-type: none; } .task-list-item-checkbox { margin-left: -20px; vertical-align: middle; }
+</style>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        
+        <script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+    </head>
+    <body>
+        <h1 id="Windows10-PC-セットアップ手順">Windows10 PC セットアップ手順</h1>
+<p>この文書はAI推進室において、WinPCを開発機としてセットアップするための手順を備忘録的にまとめたものです。</p>
+<ul>
+<li><a href="#1-KSK%E6%A8%99%E6%BA%96%E5%88%9D%E6%9C%9F%E8%A8%AD%E5%AE%9A%E6%89%8B%E9%A0%86">1. KSK標準初期設定手順</a>
+<ul>
+<li><a href="#11-%E4%B8%8D%E8%A6%81%E3%81%AA%E3%83%97%E3%83%AA%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%AE%E3%82%A2%E3%83%B3%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">1.1 不要なプリインストールソフトウェアのアンインストール</a></li>
+<li><a href="#12-McAfee%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">1.2 McAfeeのインストール</a></li>
+<li><a href="#13-McAfee%E3%81%AE%E6%9B%B4%E6%96%B0%E3%81%A8%E3%82%A6%E3%82%A4%E3%83%AB%E3%82%B9%E3%82%B9%E3%82%AD%E3%83%A3%E3%83%B3">1.3 McAfeeの更新とウイルススキャン</a></li>
+<li><a href="#14-Microsoft-Office32bit%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">1.4 Microsoft Office(32bit)のインストール</a></li>
+<li><a href="#15-Windows-Update%E3%81%AE%E5%AE%9F%E8%A1%8C">1.5 Windows Updateの実行</a></li>
+<li><a href="#16-ISMC%E3%82%AF%E3%83%A9%E3%82%A4%E3%82%A2%E3%83%B3%E3%83%88%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">1.6 ISMCクライアントのインストール</a></li>
+<li><a href="#17-%E3%81%9D%E3%81%AE%E4%BB%96%E5%BF%85%E8%A6%81%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">1.7 その他必要ソフトウェアのインストール</a></li>
+<li><a href="#18-%E6%96%B0%E5%AE%BFGC%E8%A4%87%E5%90%88%E6%A9%9F%E3%83%89%E3%83%A9%E3%82%A4%E3%83%90%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">1.8 新宿GC複合機ドライバのインストール</a></li>
+</ul>
+</li>
+<li><a href="#2-%E9%96%8B%E7%99%BA%E7%92%B0%E5%A2%83%E3%81%AE%E6%A7%8B%E7%AF%89">2. 開発環境の構築</a>
+<ul>
+<li><a href="#21-Anaconda%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">2.1 Anacondaのインストール</a></li>
+<li><a href="#22-VS-Code%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">2.2 VS Codeのインストール</a></li>
+<li><a href="#23-Git%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">2.3 Gitのインストール</a></li>
+<li><a href="#24-Microsoft-Build-Tools-for-Visual-Studio%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">2.4 Microsoft Build Tools for Visual Studioのインストール</a></li>
+<li><a href="#25-NVIDIA%E3%83%89%E3%83%A9%E3%82%A4%E3%83%90%E3%82%A2%E3%83%83%E3%83%97%E3%83%87%E3%83%BC%E3%83%88">2.5 NVIDIAドライバアップデート</a></li>
+<li><a href="#26-CUDA%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">2.6 CUDAのインストール</a></li>
+<li><a href="#27-cuDNN%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">2.7 cuDNNのインストール</a></li>
+</ul>
+</li>
+<li><a href="#3-Deep-Learning-%E3%83%95%E3%83%AC%E3%83%BC%E3%83%A0%E3%83%AF%E3%83%BC%E3%82%AF%E3%81%AE%E6%A7%8B%E7%AF%89">3. Deep Learning フレームワークの構築</a>
+<ul>
+<li><a href="#31-Tensorflow--Keras">3.1 Tensorflow + Keras</a></li>
+<li><a href="#32-Chainer">3.2 Chainer</a></li>
+<li><a href="#33-PyTorch">3.3 PyTorch</a></li>
+<li><a href="#34-Sony-NNCWindows%E7%89%88">3.4 Sony NNC(Windows版)</a></li>
+<li><a href="#35-Sony-NNabla">3.5 Sony NNabla</a></li>
+</ul>
+</li>
+<li><a href="#4-Anaconda%E4%BB%AE%E6%83%B3%E7%92%B0%E5%A2%83%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9">4. Anaconda仮想環境の使い方</a>
+<ul>
+<li><a href="#41-%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E3%81%AE%E5%88%9D%E6%9C%9F%E8%A8%AD%E5%AE%9A">4.1 ターミナルの初期設定</a>
+<ul>
+<li><a href="#2019611%E8%BF%BD%E8%A8%98">2019/6/11追記</a></li>
+</ul>
+</li>
+<li><a href="#42-%E4%BB%AE%E6%83%B3%E7%92%B0%E5%A2%83%E3%81%AE%E4%BD%9C%E6%88%90%E3%81%A8%E5%88%87%E3%82%8A%E6%9B%BF%E3%81%88">4.2 仮想環境の作成と切り替え</a></li>
+<li><a href="#43-%E3%83%91%E3%83%83%E3%82%B1%E3%83%BC%E3%82%B8%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">4.3 パッケージのインストール</a></li>
+<li><a href="#44-%E4%BB%AE%E6%83%B3%E7%92%B0%E5%A2%83%E3%81%AE%E5%89%8A%E9%99%A4">4.4 仮想環境の削除</a></li>
+<li><a href="#43-VS-Code%E3%81%AE%E8%A8%AD%E5%AE%9A">4.3 VS Codeの設定</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="1-KSK標準初期設定手順">1. KSK標準初期設定手順</h2>
+<p>最初はCOMPASSの<a href="http://compass.ksk.local/compass/main/pc_setting.pdf">PC設定手順(社内)</a>に則ってセットアップします。<br>
+なお、KSK-LANに接続するWindows機を想定しているため、COMPASSのリンクは全て社内リンクです。</p>
+<h3 id="11-不要なプリインストールソフトウェアのアンインストール">1.1 不要なプリインストールソフトウェアのアンインストール</h3>
+<p>Windowsの初期設定が終わったら、まず不要なプリインストールソフトウェアをアンインストールしてください。<strong>特に、McAfeeは必ずアンインストールしてください</strong>。既存のMcAfeeが存在すると、KSK標準のMcAfeeソフトウェアのインストールに失敗します。</p>
+<h3 id="12-McAfeeのインストール">1.2 McAfeeのインストール</h3>
+<p>「McAfeeエージェント」と「McAfee VirusScan Enterprise」をインストールする必要があります。COMPASSの<a href="http://compass.ksk.local/compass/main/jyouhoutotejyun/software/virusscan.html">VirusScan(社内)</a>から必要ファイルをダウンロードし、手順に沿ってインストールしてください。なお、<strong>この作業はWindows Updateをかける前に行うことが推奨されています</strong>(COMPASS参照)。</p>
+<h3 id="13-McAfeeの更新とウイルススキャン">1.3 McAfeeの更新とウイルススキャン</h3>
+<p>McAfeeのインストールが完了したら、定義ファイルを更新してフルスキャンを実行してください。</p>
+<h3 id="14-Microsoft-Office32bitのインストール">1.4 Microsoft Office(32bit)のインストール</h3>
+<p>Officeは本来はAXISに申請し、承認を得てからインストールしますが、慣例的に先行インストールができます。OfficeのバイナリはDirectCloud-Boxに置かれています(2019/3/7現在)。ライセンスキーも同じディレクトリに置かれているので、認証を済ませてください。<br>
+また、池田GMにOfficeのインストール申請を出してください。</p>
+<h3 id="15-Windows-Updateの実行">1.5 Windows Updateの実行</h3>
+<p>Windows Updateを実行してください。複数回実行が必要なこともあります。</p>
+<h3 id="16-ISMCクライアントのインストール">1.6 ISMCクライアントのインストール</h3>
+<p>まず、資産番号シールを貼り付けていることを確認してください。まだの場合は、速やかに貼り付けてください。ISMCクライアントはCOMPASSの<a href="http://compass.ksk.local/compass/main/jyouhoutotejyun/software/itsisan-kanri-tool.html">IT資産管理ツール(社内)</a>で配布されています。設定手順も公開されているので、確認しながら設定してください。<br>
+また、&quot;\\ADP2\管理共有\06セキュリティ\17ISMS\30_管理台帳\19_13.ハードウェア管理台帳\ハードウェア管理台帳.xlsx&quot;にPCの情報を追記してください。</p>
+<h3 id="17-その他必要ソフトウェアのインストール">1.7 その他必要ソフトウェアのインストール</h3>
+<p>その他に必要なソフトウェアをCOMPASSの<a href="http://compass.ksk.local/compass/main/Software.pdf">ソフトウェア一覧</a>からインストールしてください。少なくともAdobe ReaderとGoogle Chromeは必要かと思います。</p>
+<h3 id="18-新宿GC複合機ドライバのインストール">1.8 新宿GC複合機ドライバのインストール</h3>
+<p>&quot;\\ADP2\管理共有\24共有ツール\新宿GC_新複合機\19新宿GC3F　FFBUドライバ\&quot;から複合機のドライバをコピーし、インストールしてください。</p>
+<p>追記：Windows10環境ではTCP/IP接続で印刷できない不具合(?)が報告されています。その場合はプリンタのプロパティを開き、ポートからWSD Portにチェックを入れてください。</p>
+<p>追記その2：[コントロールパネル] &gt; [デバイスとプリンタ]でネットワークからプリンタを探して設定した方が確実です。</p>
+<h2 id="2-開発環境の構築">2. 開発環境の構築</h2>
+<p>まず事前に&quot;\\ADP2\管理共有\06セキュリティ\17ISMS\30_管理台帳\19_12.ソフトウェア管理台帳\フリーソフトウェア管理台帳(AI).xlsx&quot;を参照し、インストールしようとするソフトウェアが許可済みであるかどうか確認してください。<br>
+ただし、次に該当するものは原則として台帳に記載がなくてもインストールできます：</p>
+<ul>
+<li>NVIDIAのドライバソフトウェア(ハードウェアに紐づくため)</li>
+<li>Pythonのパッケージ(Pythonの許可で承認済みと解釈)</li>
+<li>エディタの拡張機能(エディタの許可で承認済みと解釈)</li>
+</ul>
+<p>当たり前ですが、業務に不要なものはインストールしないでください。</p>
+<h3 id="21-Anacondaのインストール">2.1 Anacondaのインストール</h3>
+<p><a href="https://www.anaconda.com/distribution/">Anaconda Distribution</a></p>
+<p>公式ページからPython3系の最新ディストリビューションをダウンロードしてインストールしてください。インストール設定の途中で環境変数の設定が非推奨(Not recommended)になっていますが、その場合Anaconda promptというターミナルでしかPythonにアクセスできません。Windowsの場合はさほど影響もないので、環境変数に設定してしまっても構いません。一応、curlなどがAnaconda環境優先になってしまうことに留意しておきましょう。<br>
+Anacondaの注意点として、パッケージの管理がpipではなくcondaになります。pipも使えますが、Anaconda環境でpipを使うと不具合が起こるという報告が少なからずありますので、可能な限りconda経由でパッケージをインストールしてください。</p>
+<p>Pythonパッケージをインストールするときは、原則として仮想環境を使います。詳しくは<a href="#4-anaconda%E4%BB%AE%E6%83%B3%E7%92%B0%E5%A2%83%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9">4. Anaconda仮想環境の使い方</a>を参照してください。</p>
+<h3 id="22-VS-Codeのインストール">2.2 VS Codeのインストール</h3>
+<p><a href="https://code.visualstudio.com/">Visual Studio Code - Microsoft</a></p>
+<p>VS CodeはMicrosoftのIDE(統合開発環境)であるVisual Studioを軽量化した開発用エディタで、無料で利用することができます。AI推進室の標準エディタとなっているので、特に理由がなければVS Codeで開発してください。</p>
+<p>VS Code拡張、設定などは<strong>職業倫理に反しない範囲で</strong>自由に設定できます。<br>
+AI推進室の標準設定が<a href="https://github.com/ksk-ai/AI_StandardDevConf/blob/master/KSKSettingForVSCode.md">KSK-AIのVS Code設定</a>にまとめられているので、参照してください。</p>
+<p>上記リンクに記載されていない部分について：<br>
+最低でも次の拡張はインストールしましょう。</p>
+<ul>
+<li>Python (Microsoft)</li>
+<li>Japanese Language Pack for Visual Studio Code</li>
+</ul>
+<p>Git Bash(または任意のシェル)を統合ターミナルとして用いたい時は、settings.jsonを開いて以下の記述を追記します(パスは適宜置き換えてください)：</p>
+<pre><code class="language-json"><div><span class="hljs-string">"terminal.integrated.shell.windows"</span>: <span class="hljs-string">"C:\\Program Files\\Git\\bin\\bash.exe"</span>
+</div></code></pre>
+<h3 id="23-Gitのインストール">2.3 Gitのインストール</h3>
+<p><a href="https://gitforwindows.org/">Git for Windows</a></p>
+<p>バイナリをダウンロードして実行すると、Git環境とGitBashがインストールされます。<br>
+インストール設定は基本的にデフォルトでいいはずですが、&quot;Configuring the line ending conversions&quot;(改行コードの設定)だけは「Checkout as-is, commit as-is」(何もしない)としてください。<br>
+Windowsの改行コードはCRLFで、UNIX系のOSはLFです。Git側で改行コードを自動変換してくれるように設定できますが、トラブルの元なので何もしないように設定するのが無難です。改行コードはエディタ側で設定しましょう。</p>
+<p>GitHubアカウントが既にある場合は、configにアカウントの情報を追記しましょう。</p>
+<pre><code class="language-bash"><div>$ git config --global user.name <span class="hljs-string">"アカウント名"</span>
+$ git config --global user.email <span class="hljs-string">"メールアドレス"</span>
+
+<span class="hljs-comment"># 反映されているか確認</span>
+$ cat ~/.gitconfig
+
+[user]
+    name = アカウント名
+    email = メールアドレス
+</div></code></pre>
+<h3 id="24-Microsoft-Build-Tools-for-Visual-Studioのインストール">2.4 Microsoft Build Tools for Visual Studioのインストール</h3>
+<p>Windowsは他のOSと異なり、標準のCコンパイラを持っていません。一部のソフトウェアやパッケージはソースコードからのビルドが必要になることもあるので、ビルドツールをインストールします。<br>
+<a href="https://www.visualstudio.microsoft.com/downloads/">Visual Studio 2019</a>のページ下部から「Tools for Visual Studio 2019」を開いて「Build Tools for Visual Studio 2019」をダウンロードしてください。<br>
+インストール画面でワークロードの「Visual C++ Build Tools」を選択し、インストールします。<s>Cupyをインストールしたい場合は、「デスクトップ用のVC++2015.3 v140ツールセット」にもチェックを入れます。Cupyのインストールはやや面倒なので、後述の資料を参考にしてください。</s> 最新版のBuild Toolsでインストールできるようになりました。</p>
+<h3 id="25-NVIDIAドライバアップデート">2.5 NVIDIAドライバアップデート</h3>
+<p>デフォルトでNVIDIA GeForce Experienceがインストールされているので、NVIDIAアカウントでログインすればアップデートできます。手間を惜しまないのであれば、手動でNVIDIAのサイトからダウンロードしてきても大丈夫です。</p>
+<h3 id="26-CUDAのインストール">2.6 CUDAのインストール</h3>
+<p><a href="https://developer.nvidia.com/cuda-downloads">NVIDIA CUDA</a></p>
+<p>最新版は深層学習ライブラリが対応していないこともあるので、ライブラリのドキュメントを確認してからバージョンを選んでください。特にNNablaはマイナーなのでCUDAの対応が遅いです。</p>
+<h3 id="27-cuDNNのインストール">2.7 cuDNNのインストール</h3>
+<p><a href="https://developer.nvidia.com/cudnn">NVIDIA cuDNN</a> (要NVIDIAアカウント登録)</p>
+<p>cuDNNをダウンロードするにはNVIDIAアカウントでサインインする必要があります。<br>
+CUDAほどバージョンに厳密ではないので、基本的には最新版を使えば大丈夫ですが、CUDAのバージョンには合わせる必要があります。</p>
+<h2 id="3-Deep-Learning-フレームワークの構築">3. Deep Learning フレームワークの構築</h2>
+<p>各フレームワークはOSとCUDAのバージョンの違いによってインストール手順が変わります。公式ページを注意深く読んで、適切な手順でインストールしてください。特にWindowsは疎外され気味です。</p>
+<p>基本的にAnacondaで仮想環境を作り、その中にインストールします。</p>
+<pre><code class="language-bash"><div>$ conda create -n NewEnv
+$ conda activate NewEnv
+</div></code></pre>
+<p>作成した仮想環境は以下のコマンドで確認できます。</p>
+<pre><code class="language-bash"><div>$ conda info -e
+<span class="hljs-comment"># conda environments:</span>
+<span class="hljs-comment">#</span>
+base                C:\Users\USERNAME\Anaconda3
+NewEnv          *   C:\Users\USERNAME\Abacibda3\envs\NewEnv
+</div></code></pre>
+<h3 id="31-Tensorflow--Keras">3.1 Tensorflow + Keras</h3>
+<p><a href="https://www.tensorflow.org/install/gpu">TensorFlow | GPU support</a></p>
+<p>公式ページの手順に従ってインストールします。GPU対応パッケージは<code>tensorflow-gpu</code>であることに注意してください。リンク先ページの最下部にあるように、環境変数を追加する必要もあります。</p>
+<h3 id="32-Chainer">3.2 Chainer</h3>
+<p><a href="https://docs.chainer.org/en/stable/install.html">Chainer documentation - Installation</a></p>
+<p>公式にはUbuntuとCentOSのみが推奨環境であり、MacとWindowsを含む他のOSでの動作は保証しないと書かれています。</p>
+<pre><code class="language-bash"><div>$ pip install chainer
+</div></code></pre>
+<p>ChainerでGPUを活用するには、別途Cupyというライブラリをインストールする必要があります。<br>
+CupyはNumpyの主要なクラス、メソッドをGPUで計算するためのライブラリです。ただし、完全互換ではありません。元々はChainerの一部でしたが、現在は分離して提供されるようになりました。Chainerを用いない場合でも、NumPy配列計算を高速化したい場合には便利です。</p>
+<p><s>最新版のCupyをインストールするには、やや面倒な手順が必要です。</s><br>
+Cupy6.0.0 以降では、比較的簡単になりました。</p>
+<ol>
+<li>Visual Studio Build Tools 2019をインストール(<a href="#24-Microsoft-Build-Tools%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB">2.4節</a>を参照)</li>
+<li>pipでCupyをインストール(CUDAのバージョンによって変わるので注意)</li>
+</ol>
+<pre><code class="language-bash"><div>$ pip install cupy-cuda100
+</div></code></pre>
+<h3 id="33-PyTorch">3.3 PyTorch</h3>
+<p><a href="https://pytorch.org/get-started/locally/">PyTorch | Get Started</a></p>
+<p>上記ページで自分の環境をクリックして選択すれば、<code>torch</code>と<code>torchvision</code>のインストール方法が表示されます。CUDAインストール済みの環境ではpip経由インストール、CUDAが入っていないもしくは別バージョンのCUDAを使いたい場合はconda経由インストールを推奨します。</p>
+<h3 id="34-Sony-NNCWindows版">3.4 Sony NNC(Windows版)</h3>
+<p><a href="https://dl.sony.com/ja/app/">公式サイト</a>でメールアドレスを登録し、届いたメールのリンクからアーカイブをダウンロードできます。ただし、あまりマイナーアップデートされないようなので、ADP1に置かれているアーカイブからインストールしても良いでしょう。</p>
+<p>アーカイブをSSDドライブの適当な場所に展開してください。一般的には「<code>C:\Users\USERNAME\</code>」または「<code>C:\Users\USERNAME\tools\</code>」にしておけばいいと思います。<br>
+初回起動時に「Visual Studio 2015のVisual C++ 再頒布可能パッケージがインストールされていません」という旨の警告が表示されますが、「Microsoft Visual C++ 2017 Redistributable」がインスールされていれば問題ありません。むしろ、その状態だと2015パッケージはインストールできません。<br>
+[ENGINE]の設定で[GPU], [Default]に変更し、GPUが使えることを確認してください。</p>
+<h3 id="35-Sony-NNabla">3.5 Sony NNabla</h3>
+<p><a href="https://nnabla.readthedocs.io/en/latest/python/pip_installation.html">NNabla package installation using PIP</a><br>
+<a href="https://nnabla.readthedocs.io/en/latest/python/pip_installation_cuda.html">NNabla CUDA extension package installation using PIP</a></p>
+<pre><code class="language-bash"><div>$ pip install nnabla
+$ pip install nnabla-ext-cuda100  <span class="hljs-comment"># CUDA10.0</span>
+$ pip install pywin32  <span class="hljs-comment"># Windows環境の場合は必須</span>
+</div></code></pre>
+<h2 id="4-Anaconda仮想環境の使い方">4. Anaconda仮想環境の使い方</h2>
+<p>プロジェクトによってはPythonやパッケージのバージョン指定が必要な場合があります。<br>
+そういう場合には仮想環境を利用すると、プロジェクト単位の環境を作成できて便利です。<br>
+また、condaとpipの競合問題から安全を確保するためにも、Anaconda環境にパッケージを追加するときは基本的に仮想環境で行うと良いでしょう。<br>
+ちなみに、仮想環境は<code>~/Anaconda3/envs/</code>以下に作成されます(Anacondaのインストール先を変更していたら適宜読み替えてください)。</p>
+<h3 id="41-ターミナルの初期設定">4.1 ターミナルの初期設定</h3>
+<p>仮想環境の利用を始める前に、ターミナルの初期設定を済ませる必要があります。</p>
+<pre><code class="language-powershell"><div>&gt; conda init
+</div></code></pre>
+<p>ターミナル環境としてbashを利用しているときは、事前に<code>.bashrc</code>を作成する必要があります。</p>
+<pre><code class="language-bash"><div>$ touch ~/.bashrc  <span class="hljs-comment"># .bashrcが存在しないときは空ファイルを作成</span>
+$ conda init bash
+</div></code></pre>
+<p>ターミナルの初期設定が済むと、プロンプトに現在のAnaconda環境が表示されるようになります。デフォルトはbaseです。</p>
+<pre><code class="language-bash"><div>(base)
+$ 
+</div></code></pre>
+<h4 id="2019611追記">2019/6/11追記</h4>
+<p>現在のcondaのバージョンでは、<code>.bashrc</code>ではなく<code>.bash_profile</code>にコードを追加します。私の環境では上手く動かなかったので、<code>.bash_profile</code>に書き込まれたコードを<code>.bashrc</code>に移して動作するようになりました。</p>
+<h3 id="42-仮想環境の作成と切り替え">4.2 仮想環境の作成と切り替え</h3>
+<p>以下のコマンドで新しい環境<code>new_env</code>を作成します。Pythonのバージョン指定がないときは、インストール可能な最新バージョンで作成されます。</p>
+<pre><code class="language-bash"><div>(base)
+$ conda create -n new_env python=3.6
+</div></code></pre>
+<p>Anacondaのbase環境から指定したパッケージを引き継ぐことが可能です。</p>
+<pre><code class="language-bash"><div>(base)
+$ conda create -n new_env python=3.6 anaconda
+</div></code></pre>
+<p>仮想環境の切り替えには<code>conda activate</code>を使います。また、<code>conda deactivate</code>で仮想環境から抜けます。</p>
+<pre><code class="language-bash"><div>(base)
+$ conda activate new_env
+(new_env)
+$ conda deactivate
+</div></code></pre>
+<p>以下のコマンドで仮想環境一覧を参照できます。</p>
+<pre><code class="language-bash"><div>(base)
+$ conda info -e
+<span class="hljs-comment"># conda environments:</span>
+<span class="hljs-comment">#</span>
+base                  *  C:\Users\02\Anaconda3
+ai-ocr                   C:\Users\02\Anaconda3\envs\ai-ocr
+new_env                  C:\Users\02\Anaconda3\envs\new_env
+</div></code></pre>
+<h3 id="43-パッケージのインストール">4.3 パッケージのインストール</h3>
+<p>仮想環境に入ってpipかcondaでインストールするだけです。</p>
+<pre><code class="language-bash"><div>(base)
+$ conda activate new_env
+(new_env)
+$ pip install numpy
+</div></code></pre>
+<p>注意点として、Jupyterやipythonのようにターミナルから実行するパッケージは、仮想環境にインストールされていないときはbase環境のパッケージが実行されます。そのときはactivateに関係なくbase環境が参照されます。</p>
+<h3 id="44-仮想環境の削除">4.4 仮想環境の削除</h3>
+<p>不要な仮想環境は削除できます。</p>
+<pre><code class="language-bash"><div>(new_env)
+$ conda deactivate
+(base)
+$ conda remove -n new_env --all
+(base)
+$ conda info -e
+<span class="hljs-comment"># conda environments:</span>
+<span class="hljs-comment">#</span>
+base                  *  C:\Users\02\Anaconda3
+ai-ocr                   C:\Users\02\Anaconda3\envs\ai-ocr
+</div></code></pre>
+<h3 id="43-VS-Codeの設定">4.3 VS Codeの設定</h3>
+<p>VS Code側でも使用する環境に合わせてパスを設定しないと、linterが正しく動作しません。<br>
+<code>python.condaPath</code>を正しく設定していると、Pythonファイルを開いているときウィンドウ最下部のステータスバーに<code>Python 3.6.8 64-bit ('base': conda)</code>という表記が出ます。それをクリックすると一覧から仮想環境を選択できます。こうすると、<code>.vscode/settings.json</code>に次の設定が書き込まれます。</p>
+<pre><code class="language-json"><div>{
+    <span class="hljs-attr">"python.pythonPath"</span>: <span class="hljs-string">"C:\\Users\\USER_NAME\\Anaconda3\\envs\\ENV_NAME\\python.exe"</span>,
+}
+</div></code></pre>
+<p>手動で変更したい場合は、コマンドパレットから<code>Preferrences: Open Workspace Settings</code>を開いて編集します。</p>
+
+    </body>
+    </html>
