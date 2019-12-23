@@ -1,36 +1,36 @@
 # Windows10 PC セットアップ手順
 この文書はAI推進室において、WinPCを開発機としてセットアップするための手順を備忘録的にまとめたものです。
 
-- [1. KSK標準初期設定手順](#1-KSK標準初期設定手順)
+- [1. KSK標準初期設定手順](#1-ksk標準初期設定手順)
   - [1.1 不要なプリインストールソフトウェアのアンインストール](#11-不要なプリインストールソフトウェアのアンインストール)
-  - [1.2 McAfeeのインストール](#12-McAfeeのインストール)
-  - [1.3 McAfeeの更新とウイルススキャン](#13-McAfeeの更新とウイルススキャン)
-  - [1.4 Microsoft Office(32bit)のインストール](#14-Microsoft-Office32bitのインストール)
-  - [1.5 Windows Updateの実行](#15-Windows-Updateの実行)
-  - [1.6 ISMCクライアントのインストール](#16-ISMCクライアントのインストール)
+  - [1.2 McAfeeのインストール](#12-mcafeeのインストール)
+  - [1.3 McAfeeの更新とウイルススキャン](#13-mcafeeの更新とウイルススキャン)
+  - [1.4 Microsoft Office(32bit)のインストール](#14-microsoft-office32bitのインストール)
+  - [1.5 Windows Updateの実行](#15-windows-updateの実行)
+  - [1.6 ISMCクライアントのインストール](#16-ismcクライアントのインストール)
   - [1.7 その他必要ソフトウェアのインストール](#17-その他必要ソフトウェアのインストール)
-  - [1.8 新宿GC複合機ドライバのインストール](#18-新宿GC複合機ドライバのインストール)
+  - [1.8 新宿GC複合機ドライバのインストール](#18-新宿gc複合機ドライバのインストール)
 - [2. 開発環境の構築](#2-開発環境の構築)
-  - [2.1 Anacondaのインストール](#21-Anacondaのインストール)
-  - [2.2 VS Codeのインストール](#22-VS-Codeのインストール)
-  - [2.3 Gitのインストール](#23-Gitのインストール)
-  - [2.4 Microsoft Build Tools for Visual Studioのインストール](#24-Microsoft-Build-Tools-for-Visual-Studioのインストール)
-  - [2.5 NVIDIAドライバアップデート](#25-NVIDIAドライバアップデート)
-  - [2.6 CUDAのインストール](#26-CUDAのインストール)
-  - [2.7 cuDNNのインストール](#27-cuDNNのインストール)
-- [3. Deep Learning フレームワークの構築](#3-Deep-Learning-フレームワークの構築)
-  - [3.1 Tensorflow + Keras](#31-Tensorflow--Keras)
-  - [3.2 Chainer](#32-Chainer)
-  - [3.3 PyTorch](#33-PyTorch)
-  - [3.4 Sony NNC(Windows版)](#34-Sony-NNCWindows版)
-  - [3.5 Sony NNabla](#35-Sony-NNabla)
-- [4. Anaconda仮想環境の使い方](#4-Anaconda仮想環境の使い方)
+  - [2.1 Anacondaのインストール](#21-anacondaのインストール)
+  - [2.2 VS Codeのインストール](#22-vs-codeのインストール)
+  - [2.3 Gitのインストール](#23-gitのインストール)
+  - [2.4 Microsoft Build Tools for Visual Studioのインストール](#24-microsoft-build-tools-for-visual-studioのインストール)
+  - [2.5 NVIDIAドライバアップデート](#25-nvidiaドライバアップデート)
+  - [2.6 CUDAのインストール](#26-cudaのインストール)
+  - [2.7 cuDNNのインストール](#27-cudnnのインストール)
+- [3. Deep Learning フレームワークの構築](#3-deep-learning-フレームワークの構築)
+  - [3.1 Tensorflow + Keras](#31-tensorflow--keras)
+  - [3.2 Chainer](#32-chainer)
+  - [3.3 PyTorch](#33-pytorch)
+  - [3.4 Sony NNC(Windows版)](#34-sony-nncwindows版)
+  - [3.5 Sony NNabla](#35-sony-nnabla)
+- [4. Anaconda仮想環境の使い方](#4-anaconda仮想環境の使い方)
   - [4.1 ターミナルの初期設定](#41-ターミナルの初期設定)
     - [2019/6/11追記](#2019611追記)
   - [4.2 仮想環境の作成と切り替え](#42-仮想環境の作成と切り替え)
   - [4.3 パッケージのインストール](#43-パッケージのインストール)
   - [4.4 仮想環境の削除](#44-仮想環境の削除)
-  - [4.3 VS Codeの設定](#43-VS-Codeの設定)
+  - [4.3 VS Codeの設定](#43-vs-codeの設定)
 
 ## 1. KSK標準初期設定手順
 最初はCOMPASSの[PC設定手順(社内)](http://compass.ksk.local/compass/main/pc_setting.pdf)に則ってセットアップします。  
@@ -46,7 +46,7 @@ Windowsの初期設定が終わったら、まず不要なプリインストー�
 McAfeeのインストールが完了したら、定義ファイルを更新してフルスキャンを実行してください。
 
 ### 1.4 Microsoft Office(32bit)のインストール
-Officeは本来はAXISに申請し、承認を得てからインストールしますが、慣例的に先行インストールができます。OfficeのバイナリはDirectCloud-Boxに置かれています(2019/3/7現在)。ライセンスキーも同じディレクトリに置かれているので、認証を済ませてください。  
+Officeは本来はAXISに申請し、承認を得てからインストールしますが、慣例的に先行インストールができます。OfficeのバイナリはADP1(\\Adp1\ai\2.リソース\2.ソフトウェア)に置かれています(2019/7/29現在)。ライセンスキーも同じディレクトリに置かれているので、認証を済ませてください。  
 また、池田GMにOfficeのインストール申請を出してください。
 
 ### 1.5 Windows Updateの実行
